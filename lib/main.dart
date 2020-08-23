@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/screens/Product_overview_screen.dart';
+import 'package:state_management/screens/product_details_screen.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -12,6 +13,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Lato',
       ),
       home: ProductOverviewScreen(),
+      routes: {
+        ProductDetailScreen.id: (context) => ProductDetailScreen(),
+      },
     );
   }
 }
