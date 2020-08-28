@@ -5,17 +5,17 @@ import 'package:state_management/providers/cart.dart';
 class CartItem extends StatelessWidget {
   final String id;
   final String productId;
-  final String title;
-  final int quantity;
   final double price;
+  final int quantity;
+  final String title;
 
-  CartItem({
+  CartItem(
     this.id,
     this.productId,
     this.price,
     this.quantity,
     this.title,
-  });
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class CartItem extends StatelessWidget {
               ),
             ),
             title: Text(title),
-            subtitle: Text('Total: NGN ${price * quantity}'),
+            subtitle: Text('Total: NGN ${(price * quantity)}'),
             trailing: Text('$quantity *'),
           ),
         ),

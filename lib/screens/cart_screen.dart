@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:state_management/widgets/cart_item.dart' as ci;
-import 'package:state_management/providers/cart.dart';
+import 'package:state_management/widgets/cart_item.dart';
+import 'package:state_management/providers/cart.dart' show Cart;
 
 class CartScreen extends StatelessWidget {
   static const id = 'cart_screen';
 
   @override
   Widget build(BuildContext context) {
-    final cartTotal = Provider.of<Cart>(context);
+    final cart = Provider.of<Cart>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your carr'),
+        title: const Text('Your cart'),
       ),
       body: Column(
         children: [
@@ -30,7 +30,7 @@ class CartScreen extends StatelessWidget {
                   Spacer(),
                   Chip(
                     label: Text(
-                      'NGN ${cartTotal.totalAmount}',
+                      'NGN ${cart.totalAmount}',
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -47,13 +47,14 @@ class CartScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemBuilder: (ctx, i) => ci.CartItem(
-                          id: cartTotal.items.values.toList()[i].id,
-                          productId: cartTotal.items.keys.toList()[i],
-                          title: cartTotal.items.values.toList()[i].title,
-                          quantity: cartTotal.items.values.toList()[i].quantity,
-                          price: cartTotal.items.values.toList()[i].price),
-                      itemCount: cartTotal.itemCount,
+                      itemBuilder: (ctx, i) => CartItem(
+                        cart.items.values.toList()[i].id,
+                        cart.items.keys.toList()[i],
+                        cart.items.values.toList()[i].price,
+                        cart.items.values.toList()[i].quantity,
+                        cart.items.values.toList()[i].title,
+                      ),
+                      itemCount: cart.items.length,
                     ),
                   ),
                 ],
