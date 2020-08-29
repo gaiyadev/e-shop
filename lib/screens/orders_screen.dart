@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:state_management/providers/orders_provider.dart' show Orders;
+import 'package:state_management/widgets/app_drawer.dart';
 import '../widgets/order_item.dart';
 
 class OrdersScreen extends StatelessWidget {
-  // static final id = 'order_screen';
+  static const id = 'order_screen';
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +13,9 @@ class OrdersScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Order'),
+        title: const Text('Your Orders'),
       ),
+      drawer: AppDrawer(),
       body: ListView.builder(
         itemCount: orderData.orders.length,
         itemBuilder: (ctx, i) => OrderItem(
