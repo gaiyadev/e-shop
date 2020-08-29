@@ -1,66 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:state_management/widgets/cart_item.dart';
-import 'package:state_management/providers/cart.dart' show Cart;
+
+import '../providers/cart.dart' show Cart;
+import '../widgets/cart_item.dart';
 
 class CartScreen extends StatelessWidget {
-  static const id = 'cart_screen';
+  static const id = '/cart';
 
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your cart'),
+        title: Text('Your Cart'),
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           Card(
-            margin: EdgeInsets.all(15.0),
+            margin: EdgeInsets.all(15),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   Text(
                     'Total',
-                    style: TextStyle(fontSize: 20.0),
+                    style: TextStyle(fontSize: 20),
                   ),
                   Spacer(),
                   Chip(
                     label: Text(
-                      'NGN ${cart.totalAmount}',
+                      '\$${cart.totalAmount}',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).primaryTextTheme.title.color,
                       ),
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   FlatButton(
+                    child: Text('ORDER NOW'),
                     onPressed: () {},
-                    child: Text('Order Now'),
                     textColor: Theme.of(context).primaryColor,
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemBuilder: (ctx, i) => CartItem(
-                        cart.items.values.toList()[i].id,
-                        cart.items.keys.toList()[i],
-                        cart.items.values.toList()[i].price,
-                        cart.items.values.toList()[i].quantity,
-                        cart.items.values.toList()[i].title,
-                      ),
-                      itemCount: cart.items.length,
-                    ),
-                  ),
+                  )
                 ],
               ),
             ),
           ),
+          SizedBox(height: 10),
+          Expanded(
+            child: ListView.builder(
+              itemCount: cart.items.length,
+              itemBuilder: (ctx, i) => CartItem(
+                cart.items.values.toList()[i].id,
+                cart.items.keys.toList()[i],
+                cart.items.values.toList()[i].price,
+                cart.items.values.toList()[i].quantity,
+                cart.items.values.toList()[i].title,
+              ),
+            ),
+          )
         ],
       ),
     );
