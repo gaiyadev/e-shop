@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:state_management/providers/product_provider.dart';
+import 'package:state_management/screens/edit_product_screen.dart';
 import 'package:state_management/widgets/app_drawer.dart';
 import 'package:state_management/widgets/user_product_item.dart';
 
@@ -17,7 +18,9 @@ class UserProductScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(EditProductScreen.id);
+            },
           ),
         ],
       ),
