@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:state_management/providers/product.dart';
+import 'package:state_management/providers/product_provider.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const id = 'edit_product_screen';
@@ -58,10 +60,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState.save();
-    print(_editedProduct.title);
-    print(_editedProduct.description);
-    print(_editedProduct.imageUrl);
-    print(_editedProduct.price);
+    Provider.of<Products>(
+      context,
+      listen: false,
+    ).addProduct(_editedProduct);
+    Navigator.of(context).pop();
+    // print(_editedProduct.title);
+    // print(_editedProduct.description);
+    // print(_editedProduct.imageUrl);
+    // print(_editedProduct.price);
   }
 
   @override
@@ -79,6 +86,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
+          autovalidate: true,
           key: _form,
           // for Longger form us Column with SingleScrollChildView
           child: ListView(
