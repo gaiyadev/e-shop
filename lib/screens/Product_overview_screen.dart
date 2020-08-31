@@ -19,20 +19,20 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   var _isInitState = true;
   var _isLoading = false;
 
-  @override
-  void didChangeDependencies() {
-    if (_isInitState) {
-      _isLoading = true;
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInitState) {
+  //     _isLoading = true;
 
-      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    }
-    _isInitState = false;
-    super.didChangeDependencies();
-  }
+  //     Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+  //       setState(() {
+  //         _isLoading = false;
+  //       });
+  //     });
+  //   }
+  //   _isInitState = false;
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
