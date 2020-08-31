@@ -110,28 +110,29 @@ class _EditProductScreenState extends State<EditProductScreen> {
           listen: false,
         ).addProduct(_editedProduct);
       } catch (err) {
-        await showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  backgroundColor: Colors.purpleAccent,
-                  title: Text(
-                    'An error occured',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  content: Text(
-                    'Something went wrong',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  actions: [
-                    FlatButton(
-                      color: Colors.white,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Ok'),
-                    )
-                  ],
-                ));
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: Colors.purpleAccent,
+            title: Text(
+              'An error occured',
+              style: TextStyle(color: Colors.white),
+            ),
+            content: Text(
+              'Something went wrong',
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: [
+              FlatButton(
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Ok'),
+              )
+            ],
+          ),
+        );
       } finally {
         setState(() {
           _isLoading = false;

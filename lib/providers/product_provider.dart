@@ -8,38 +8,38 @@ const url = 'https://e-store-3adcd.firebaseio.com/products.json';
 
 class Products with ChangeNotifier {
   List<Product> _items = [
-    Product(
-      id: 'p1',
-      title: 'Red Shirt',
-      description: 'A red shirt - it is pretty red!',
-      price: 29.99,
-      imageUrl:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-    ),
-    Product(
-      id: 'p2',
-      title: 'Trousers',
-      description: 'A nice pair of trousers.',
-      price: 59.99,
-      imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
-    ),
-    Product(
-      id: 'p3',
-      title: 'Yellow Scarf',
-      description: 'Warm and cozy - exactly what you need for the winter.',
-      price: 19.99,
-      imageUrl:
-          'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
-    ),
-    Product(
-      id: 'p4',
-      title: 'A Pan',
-      description: 'Prepare any meal you want.',
-      price: 49.99,
-      imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
-    ),
+    // Product(
+    //   id: 'p1',
+    //   title: 'Red Shirt',
+    //   description: 'A red shirt - it is pretty red!',
+    //   price: 29.99,
+    //   imageUrl:
+    //       'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
+    // ),
+    // Product(
+    //   id: 'p2',
+    //   title: 'Trousers',
+    //   description: 'A nice pair of trousers.',
+    //   price: 59.99,
+    //   imageUrl:
+    //       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
+    // ),
+    // Product(
+    //   id: 'p3',
+    //   title: 'Yellow Scarf',
+    //   description: 'Warm and cozy - exactly what you need for the winter.',
+    //   price: 19.99,
+    //   imageUrl:
+    //       'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
+    // ),
+    // Product(
+    //   id: 'p4',
+    //   title: 'A Pan',
+    //   description: 'Prepare any meal you want.',
+    //   price: 49.99,
+    //   imageUrl:
+    //       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
+    // ),
     Product(
       id: 'p5',
       title: 'A Pane',
@@ -67,22 +67,6 @@ class Products with ChangeNotifier {
     Product(
       id: 'p8',
       title: 'gang',
-      description: 'Prepare any meal you want.',
-      price: 49.99,
-      imageUrl:
-          'https://image.shutterstock.com/image-photo/children-clothes-hanging-on-hangers-600w-455876137.jpg',
-    ),
-    Product(
-      id: 'p9',
-      title: 'wow',
-      description: 'Prepare any meal you want.',
-      price: 49.99,
-      imageUrl:
-          'https://image.shutterstock.com/image-photo/children-clothes-hanging-on-hangers-600w-455876137.jpg',
-    ),
-    Product(
-      id: 'p10',
-      title: 'est',
       description: 'Prepare any meal you want.',
       price: 49.99,
       imageUrl:
@@ -117,6 +101,35 @@ class Products with ChangeNotifier {
   //   _showFavoritesOnly = false;
   //   notifyListeners();
   // }
+
+  Future<void> fetchAndSetProducts() async {
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<Product> loadedProduct = [];
+        final extractedData =
+            json.decode(response.body) as Map<String, dynamic>;
+        extractedData.forEach((prodId, prodData) {
+          loadedProduct.add(Product(
+            id: prodId,
+            title: prodData['tittle'],
+            description: prodData['description'],
+            price: prodData['price'],
+            isFavorite: prodData['isFavorite'],
+            imageUrl: prodData['imageUrl'],
+          ));
+        });
+        _items = loadedProduct;
+        notifyListeners();
+        print(extractedData);
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+  }
 
   Future<void> addProduct(Product product) async {
     try {
