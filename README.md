@@ -1,6 +1,6 @@
 # e-Shop
 
-e-Shop is a e-Commerce application built with flutter and firebase.
+e-Shop is an e-Commerce application built with flutter and firebase.
 
 ## Features 
 + Register and Login 
