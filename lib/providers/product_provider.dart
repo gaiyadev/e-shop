@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:state_management/models/http_exception.dart';
 import 'package:state_management/providers/product.dart';
 import 'package:http/http.dart' as http;
 
@@ -174,17 +175,34 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
-    final uri = 'https://e-store-3adcd.firebaseio.com/products$id.json';
-    final existinProductIndex = _items.indexWhere((prod) => prod.id == id);
-    var existingProduct = _items[existinProductIndex];
-    _items.removeAt(existinProductIndex);
-    http.delete(uri).then((_) {
-      existingProduct = null;
-    }).catchError((_) {
-      _items.insert(existinProductIndex, existingProduct);
-    });
-    // _items.removeWhere((prod) => prod.id == id);
+  // Future<void> deleteProduct(String id) async {
+  //   final uri = 'https://e-store-3adcd.firebaseio.com/products$id';
+  //   final existinProductIndex = _items.indexWhere((prod) => prod.id == id);
+  //   var existingProduct = _items[existinProductIndex];
+  //   _items.removeAt(existinProductIndex);
+  //   notifyListeners();
+  //   final response = await http.delete(uri);
+  //   if (response.statusCode >= 400) {
+  //     _items.insert(existinProductIndex, existingProduct);
+  //     notifyListeners();
+  //     throw HttpException('Could not delete product');
+  //   } else {
+  //     existingProduct = null;
+  //   }
+  // }
+
+  Future<void> deleteProduct(String id) async {
+    final uri = 'https://e-store-3adcd.firebaseio.com/products$id';
+    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    var existingProduct = _items[existingProductIndex];
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+    final response = await http.delete(uri);
+    if (response.statusCode >= 400) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete product.');
+    }
+    existingProduct = null;
   }
 }
