@@ -40,30 +40,30 @@ class Products with ChangeNotifier {
     //   imageUrl:
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     // ),
-    Product(
-      id: 'p5',
-      title: 'A Pane',
-      description: 'Prepare any meal you want.',
-      price: 49.99,
-      imageUrl:
-          'https://image.shutterstock.com/image-photo/stack-clothing-jeans-sweaters-on-600w-1268384791.jpg',
-    ),
-    Product(
-      id: 'p6',
-      title: 'shirt',
-      description: 'Prepare any meal you want.',
-      price: 49.99,
-      imageUrl:
-          'https://image.shutterstock.com/image-photo/stack-clothes-on-table-indoorhousehold-600w-695271853.jpg',
-    ),
-    Product(
-      id: 'p7',
-      title: 'jean',
-      description: 'Prepare any meal you want.',
-      price: 49.99,
-      imageUrl:
-          'https://image.shutterstock.com/image-photo/woman-trendy-fashion-clothes-collage-600w-523691986.jpg',
-    ),
+    // Product(
+    //   id: 'p5',
+    //   title: 'A Pane',
+    //   description: 'Prepare any meal you want.',
+    //   price: 49.99,
+    //   imageUrl:
+    //       'https://image.shutterstock.com/image-photo/stack-clothing-jeans-sweaters-on-600w-1268384791.jpg',
+    // ),
+    // Product(
+    //   id: 'p6',
+    //   title: 'shirt',
+    //   description: 'Prepare any meal you want.',
+    //   price: 49.99,
+    //   imageUrl:
+    //       'https://image.shutterstock.com/image-photo/stack-clothes-on-table-indoorhousehold-600w-695271853.jpg',
+    // ),
+    // Product(
+    //   id: 'p7',
+    //   title: 'jean',
+    //   description: 'Prepare any meal you want.',
+    //   price: 49.99,
+    //   imageUrl:
+    //       'https://image.shutterstock.com/image-photo/woman-trendy-fashion-clothes-collage-600w-523691986.jpg',
+    // ),
     Product(
       id: 'p8',
       title: 'gang',
@@ -105,26 +105,22 @@ class Products with ChangeNotifier {
   Future<void> fetchAndSetProducts() async {
     try {
       final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final List<Product> loadedProduct = [];
-        final extractedData =
-            json.decode(response.body) as Map<String, dynamic>;
-        extractedData.forEach((prodId, prodData) {
-          loadedProduct.add(Product(
-            id: prodId,
-            title: prodData['tittle'],
-            description: prodData['description'],
-            price: prodData['price'],
-            isFavorite: prodData['isFavorite'],
-            imageUrl: prodData['imageUrl'],
-          ));
-        });
-        _items = loadedProduct;
-        notifyListeners();
-        print(extractedData);
-      } else {
-        print(response.statusCode);
-      }
+      final List<Product> loadedProduct = [];
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      extractedData.forEach((prodId, prodData) {
+        loadedProduct.add(Product(
+          id: prodId,
+          title: prodData['title'],
+          description: prodData['description'],
+          price: prodData['price'],
+          isFavorite: prodData['isFavorite'],
+          imageUrl: prodData['imageUrl'],
+        ));
+      });
+      _items = loadedProduct;
+      notifyListeners();
+      // print(extractedData);
     } catch (e) {
       print(e);
       throw e;
