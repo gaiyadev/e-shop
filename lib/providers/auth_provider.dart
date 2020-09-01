@@ -8,9 +8,31 @@ class Auth with ChangeNotifier {
   DateTime _expireDate;
   String _userId;
 
+//Sign up logic
   Future<void> signup(String email, String password) async {
     const url =
         'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBZrYGSv3WHkfxAQUmtwnoD-FDByQmDgcs';
+    try {
+      final response = await http.post(
+        url,
+        body: jsonEncode({
+          'email': email,
+          'password': password,
+          'refreshToken': true,
+        }),
+      );
+      if (response.statusCode == 200) {
+        // print(jsonDecode(response.body));
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+//login logic
+  Future<void> login(String email, String password) async {
+    const url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBZrYGSv3WHkfxAQUmtwnoD-FDByQmDgcs';
     try {
       final response = await http.post(
         url,
