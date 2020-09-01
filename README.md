@@ -10,7 +10,7 @@ e-Shop is an e-Commerce application built with flutter and firebase.
 + Add to Cart and Order
 + Add to favorites
 + View Orders
-+ Filter products
++ Filter products base on favorites
 + Proper Error Handling
 + Http request
 + State managrment using the Provider package
