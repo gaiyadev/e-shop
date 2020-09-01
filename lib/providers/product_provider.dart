@@ -175,24 +175,8 @@ class Products with ChangeNotifier {
     }
   }
 
-  // Future<void> deleteProduct(String id) async {
-  //   final uri = 'https://e-store-3adcd.firebaseio.com/products$id';
-  //   final existinProductIndex = _items.indexWhere((prod) => prod.id == id);
-  //   var existingProduct = _items[existinProductIndex];
-  //   _items.removeAt(existinProductIndex);
-  //   notifyListeners();
-  //   final response = await http.delete(uri);
-  //   if (response.statusCode >= 400) {
-  //     _items.insert(existinProductIndex, existingProduct);
-  //     notifyListeners();
-  //     throw HttpException('Could not delete product');
-  //   } else {
-  //     existingProduct = null;
-  //   }
-  // }
-
   Future<void> deleteProduct(String id) async {
-    final uri = 'https://e-store-3adcd.firebaseio.com/products$id';
+    final uri = 'https://e-store-3adcd.firebaseio.com/products$id.json';
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);
