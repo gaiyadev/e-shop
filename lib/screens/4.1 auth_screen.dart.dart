@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatelessWidget {
-  static const routeName = '/auth';
+  static const id = '/auth';
 
   @override
   Widget build(BuildContext context) {
