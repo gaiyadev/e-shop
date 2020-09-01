@@ -175,7 +175,16 @@ class Products with ChangeNotifier {
   }
 
   void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+    final uri = 'https://e-store-3adcd.firebaseio.com/products$id.json';
+    final existinProductIndex = _items.indexWhere((prod) => prod.id == id);
+    var existingProduct = _items[existinProductIndex];
+    _items.removeAt(existinProductIndex);
+    http.delete(uri).then((_) {
+      existingProduct = null;
+    }).catchError((_) {
+      _items.insert(existinProductIndex, existingProduct);
+    });
+    // _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
 }
