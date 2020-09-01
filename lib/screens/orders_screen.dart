@@ -4,14 +4,9 @@ import 'package:state_management/providers/orders_provider.dart' show Orders;
 import 'package:state_management/widgets/app_drawer.dart';
 import '../widgets/order_item.dart';
 
-class OrdersScreen extends StatefulWidget {
+class OrdersScreen extends StatelessWidget {
   static const id = 'order_screen';
 
-  @override
-  _OrdersScreenState createState() => _OrdersScreenState();
-}
-
-class _OrdersScreenState extends State<OrdersScreen> {
   // var _isLoading = false;
   // @override
   // void initState() {
@@ -43,12 +38,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
         body: FutureBuilder(
           builder: (ctx, dataSnapshot) {
             if (dataSnapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             } else {
               if (dataSnapshot.error != null) {
-                //code
                 return Center(
-                  child: Text('error'),
+                  //Error handling stuff here
+                  child: Center(
+                    child: Text('An error occured'),
+                  ),
                 );
               } else {
                 return Consumer<Orders>(
@@ -62,10 +61,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               }
             }
           },
-          future: Provider.of<Orders>(
-            context,
-            listen: false,
-          ).fetchOrders(),
+          future: Provider.of<Orders>(context, listen: false).fetchOrders(),
         ));
   }
 }
