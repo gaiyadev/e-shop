@@ -12,32 +12,60 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  @override
-  void initState() {
-    Future.delayed(Duration.zero).then((_) {
-      Provider.of<Orders>(
-        context,
-        listen: false,
-      ).fetchOrders();
-    });
-    super.initState();
-  }
+  // var _isLoading = false;
+  // @override
+  // void initState() {
+  //   // Future.delayed(Duration.zero).then((_) async{
+  //   _isLoading = true;
+
+  //   Provider.of<Orders>(
+  //     context,
+  //     listen: false,
+  //   ).fetchOrders().then((_) {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   });
+
+  //   // });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final orderData = Provider.of<Orders>(context);
+    // final orderData = Provider.of<Orders>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Orders'),
-      ),
-      drawer: AppDrawer(),
-      body: ListView.builder(
-        itemCount: orderData.orders.length,
-        itemBuilder: (ctx, i) => OrderItem(
-          orderData.orders[i],
+        appBar: AppBar(
+          title: const Text('Your Orders'),
         ),
-      ),
-    );
+        drawer: AppDrawer(),
+        body: FutureBuilder(
+          builder: (ctx, dataSnapshot) {
+            if (dataSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              if (dataSnapshot.error != null) {
+                //code
+                return Center(
+                  child: Text('error'),
+                );
+              } else {
+                return Consumer<Orders>(
+                  builder: (ctx, orderData, child) => ListView.builder(
+                    itemCount: orderData.orders.length,
+                    itemBuilder: (ctx, i) => OrderItem(
+                      orderData.orders[i],
+                    ),
+                  ),
+                );
+              }
+            }
+          },
+          future: Provider.of<Orders>(
+            context,
+            listen: false,
+          ).fetchOrders(),
+        ));
   }
 }
