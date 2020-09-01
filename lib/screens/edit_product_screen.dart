@@ -95,14 +95,36 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      Provider.of<Products>(
-        context,
-        listen: false,
-      ).updateProduct(_editedProduct.id, _editedProduct);
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
+      try {
+        await Provider.of<Products>(
+          context,
+          listen: false,
+        ).updateProduct(_editedProduct.id, _editedProduct);
+      } catch (err) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: Colors.purpleAccent,
+            title: Text(
+              'An error occured',
+              style: TextStyle(color: Colors.white),
+            ),
+            content: Text(
+              'Something went wrong',
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: [
+              FlatButton(
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Ok'),
+              )
+            ],
+          ),
+        );
+      }
     } else {
       try {
         await Provider.of<Products>(
@@ -133,13 +155,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
             ],
           ),
         );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
       }
+      // finally {
+      //   setState(() {
+      //     _isLoading = false;
+      //   });
+      //   Navigator.of(context).pop();
+      // }
     }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
   }
 
   @override
