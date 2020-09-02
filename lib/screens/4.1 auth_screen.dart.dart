@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:state_management/models/http_exception.dart';
 import 'package:state_management/providers/auth_provider.dart';
 
 enum AuthMode { Signup, Login }
@@ -103,6 +104,23 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('An error occured'),
+              content: Text(message),
+              actions: [
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Ok'),
+                ),
+              ],
+            ));
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
@@ -112,18 +130,44 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      // Log user in
-      await Provider.of<Auth>(context, listen: false).login(
-        _authData['email'],
-        _authData['password'],
-      );
-    } else {
-      // Sign user up
-      await Provider.of<Auth>(context, listen: false).signup(
-        _authData['email'],
-        _authData['password'],
-      );
+    try {
+      if (_authMode == AuthMode.Login) {
+        // Log user in
+        await Provider.of<Auth>(context, listen: false).login(
+          _authData['email'],
+          _authData['password'],
+        );
+      } else {
+        // Sign user up
+        await Provider.of<Auth>(context, listen: false).signup(
+          _authData['email'],
+          _authData['password'],
+        );
+      }
+    } on HttpException catch (err) {
+      var errMessage = 'Authentication failed';
+
+      if (err.toString().contains('EMAIL_EXISTS')) {
+        errMessage = 'Email address already exist';
+      } else if (err.toString().contains('INVALID_EMAIL')) {
+        errMessage = 'Email is invalid';
+      } else if (err.toString().contains('OPERATION_NOT_ALLOWED')) {
+        errMessage = 'Operation not allowed';
+      } else if (err.toString().contains('WEAK_PASSWORD')) {
+        errMessage = 'Password is too weak. it must be morethan 6 characters';
+      } else if (err.toString().contains('EMAIL_NOT_FOUND')) {
+        errMessage = 'Counld not find user with this email';
+      } else if (err.toString().contains('INVALID_PASSWORD')) {
+        errMessage = 'Invalid password';
+      } else if (err.toString().contains('USER_DISABLED')) {
+        errMessage = 'User is desiabled';
+      } else {
+        return errMessage;
+      }
+      _showErrorDialog(errMessage);
+    } catch (err) {
+      var errMessage = 'Could not authenticate you. Please try again later';
+      _showErrorDialog(errMessage);
     }
     setState(() {
       _isLoading = false;
