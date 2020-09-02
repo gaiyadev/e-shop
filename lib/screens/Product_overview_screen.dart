@@ -10,6 +10,7 @@ import 'package:state_management/widgets/product_grid.dart';
 enum FilterOptions { Favorites, All }
 
 class ProductOverviewScreen extends StatefulWidget {
+  static final id = 'product_overview_screen';
   @override
   _ProductOverviewScreenState createState() => _ProductOverviewScreenState();
 }

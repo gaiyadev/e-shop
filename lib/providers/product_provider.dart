@@ -5,8 +5,6 @@ import 'package:state_management/models/http_exception.dart';
 import 'package:state_management/providers/product.dart';
 import 'package:http/http.dart' as http;
 
-const url = 'https://e-store-3adcd.firebaseio.com/products.json';
-
 class Products with ChangeNotifier {
   List<Product> _items = [
     // Product(
@@ -65,17 +63,20 @@ class Products with ChangeNotifier {
     //   imageUrl:
     //       'https://image.shutterstock.com/image-photo/woman-trendy-fashion-clothes-collage-600w-523691986.jpg',
     // ),
-    Product(
-      id: 'p8',
-      title: 'gang',
-      description: 'Prepare any meal you want.',
-      price: 49.99,
-      imageUrl:
-          'https://image.shutterstock.com/image-photo/children-clothes-hanging-on-hangers-600w-455876137.jpg',
-    ),
+    // Product(
+    //   id: 'p8',
+    //   title: 'gang',
+    //   description: 'Prepare any meal you want.',
+    //   price: 49.99,
+    //   imageUrl:
+    //       'https://image.shutterstock.com/image-photo/children-clothes-hanging-on-hangers-600w-455876137.jpg',
+    // ),
   ];
 
   // var _showFavoritesOnly = false;
+
+  // final String authToken;
+  // Products(this.authToken, this._items);
 
   List<Product> get items {
     // if (_showFavoritesOnly) {
@@ -104,6 +105,8 @@ class Products with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetProducts() async {
+    final url = 'https://e-store-3adcd.firebaseio.com/products.json';
+
     try {
       final response = await http.get(url);
       final List<Product> loadedProduct = [];
@@ -132,6 +135,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
+    final url = 'https://e-store-3adcd.firebaseio.com/products.json';
+
     try {
       final response = await http.post(
         url,
