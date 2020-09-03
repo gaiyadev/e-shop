@@ -4,7 +4,7 @@ import 'package:state_management/providers/auth_provider.dart';
 import 'package:state_management/providers/cart.dart';
 import 'package:state_management/providers/orders_provider.dart';
 import 'package:state_management/providers/product_provider.dart';
-import 'package:state_management/screens/4.1%20auth_screen.dart.dart';
+import 'package:state_management/screens/auth_screen.dart';
 import 'package:state_management/screens/Product_overview_screen.dart';
 import 'package:state_management/screens/cart_screen.dart';
 import 'package:state_management/screens/edit_product_screen.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<Auth>(
-      builder: (context, auth, _) => MaterialApp(
+      builder: (ctx, auth, _) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'MyShop',
         theme: ThemeData(
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
           OrdersScreen.id: (context) => OrdersScreen(),
           UserProductScreen.id: (context) => UserProductScreen(),
           EditProductScreen.id: (context) => EditProductScreen(),
-          AuthScreen.id: (context) => AuthScreen(),
+          // AuthScreen.id: (context) => AuthScreen(),
           ProductOverviewScreen.id: (context) => ProductDetailScreen(),
         },
       ),

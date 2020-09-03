@@ -106,7 +106,6 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url = 'https://e-store-3adcd.firebaseio.com/products.json';
-
     try {
       final response = await http.get(url);
       final List<Product> loadedProduct = [];
@@ -136,7 +135,6 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = 'https://e-store-3adcd.firebaseio.com/products.json';
-
     try {
       final response = await http.post(
         url,

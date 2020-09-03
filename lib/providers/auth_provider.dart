@@ -4,11 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:state_management/models/http_exception.dart';
 
+const API_KEY = 'AIzaSyBZrYGSv3WHkfxAQUmtwnoD-FDByQmDgcs';
+
 class Auth with ChangeNotifier {
   String _token;
   DateTime _expiryDate;
   String _userId;
-  String _refreshToken;
 
   bool get isAuth {
     return token != null;
@@ -28,7 +29,7 @@ class Auth with ChangeNotifier {
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
     final url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyBZrYGSv3WHkfxAQUmtwnoD-FDByQmDgcs';
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=$API_KEY';
     try {
       final response = await http.post(
         url,
@@ -40,9 +41,9 @@ class Auth with ChangeNotifier {
       );
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
+        print(responseData);
         _token = responseData['idToken'];
         _userId = responseData['localId'];
-        _refreshToken = responseData['refreshToken'];
         _expiryDate = DateTime.now().add(
           Duration(
             seconds: int.parse(
