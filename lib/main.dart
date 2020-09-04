@@ -21,10 +21,10 @@ void main() {
           create: (null),
           update: (_, auth, prevState) => Products(
             auth.token,
+            auth.userId,
             prevState == null ? [] : prevState.items,
           ),
         ),
-        // ChangeNotifierProxyProvider<Auth, Products>(builder: (_, auth, prevProduct) => Products(auth.token, prevProduct.items,
         ChangeNotifierProvider(create: (_) => Cart()),
         ChangeNotifierProxyProvider<Auth, Orders>(
           create: null,
