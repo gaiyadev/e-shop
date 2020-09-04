@@ -109,9 +109,10 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filter = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     var url =
-        'https://e-store-3adcd.firebaseio.com/products.json?auth=$authToken';
+        'https://e-store-3adcd.firebaseio.com/products.json?auth=$authToken&$filter';
     try {
       final response = await http.get(url);
       final List<Product> loadedProduct = [];
@@ -155,6 +156,7 @@ class Products with ChangeNotifier {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
+          'creatorId': userId,
           // 'isFavorite': product.isFavorite,
         }),
       );
