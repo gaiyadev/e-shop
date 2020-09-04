@@ -16,10 +16,23 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Products()),
+        ChangeNotifierProvider(create: (_) => Auth()),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          create: (null),
+          update: (_, auth, prevState) => Products(
+            auth.token,
+            prevState == null ? [] : prevState.items,
+          ),
+        ),
+        // ChangeNotifierProxyProvider<Auth, Products>(builder: (_, auth, prevProduct) => Products(auth.token, prevProduct.items,
         ChangeNotifierProvider(create: (_) => Cart()),
-        ChangeNotifierProvider(create: (_) => Orders()),
-        ChangeNotifierProvider(create: (_) => Auth())
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          create: null,
+          update: (_, auth, preState) => Orders(
+            auth.token,
+            preState == null ? [] : preState.orders,
+          ),
+        ),
       ],
       child: MyApp(),
     ),
